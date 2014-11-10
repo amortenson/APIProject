@@ -14,7 +14,8 @@ def main():
     for match in results['matches']:
         if 'smallImageUrls' in match.keys():
             foods+=(match['smallImageUrls'])
-    return render_template("base.html", foods=foods)
+    attribution=(results['attribution']['html'])
+    return render_template("base.html", foods=foods, attribution=attribution)
 
 
 if __name__=="__main__":
