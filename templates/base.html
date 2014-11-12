@@ -44,7 +44,7 @@
 	    <div class="pure-control-group">
 	      <img src="{{ food['image'] }}"></img>
 	      {{ food['name'] }}:  
-	      <select id = {{ food['name'] }}>
+	      <select name = {{food['id']}}>
 		<option value=0>0</option>
 		<option value=1>1</option>
 		<option value=2>2</option>
@@ -63,6 +63,8 @@
 	  </fieldset>
 	</form>
 	<br><br>
+	{{ test|safe }}
+	<br>
 	{{attribution|safe}}
 	{% endblock bodycontent %}
       </div>
