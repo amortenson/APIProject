@@ -35,8 +35,11 @@
       <div class="pure-u-22-24" id = "main">
 	<br>
 	{% block bodycontent %}
+	{% if not entered %}
 	<h1>Rate the Following Foods to Find Your Ideal Food:</h1>
 	<br>
+	<form method="POST" class="pure-form pure-form-aligned">
+	  <fieldset> 
 	    {% for food in foods %}
 	    <div class="pure-control-group">
 	      <img src="{{ food['image'] }}"></img>
@@ -60,7 +63,11 @@
 	  </fieldset>
 	</form>
 	<br><br>
-	{{ test|safe }}
+	{% else %}
+	Your ideal food: {{ test['name'] }} <img src="{{ test['image'] }}"></img>
+	<br>
+	<a href='../'><button class="pure-button pure-button-primary">Back</button></a>
+	{% endif %}
 	<br>
 	{{attribution|safe}}
 	{% endblock bodycontent %}
