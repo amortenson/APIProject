@@ -20,6 +20,7 @@ def main():
     if request.method == "GET":
         return render_template("base.html", foods=foods, test="moo",attribution=attribution)
     else:
+        
         empty=[]
         elements = 0
         flavors = [0,0,0,0,0,0]
@@ -35,8 +36,3 @@ def main():
                 flavors[i] = flavors[i]/elements      
         test="sweet,sour,salty,bitter,piquant,meaty<br>"+str(flavors)               
         return render_template("base.html", foods=empty, test=test,attribution=attribution)
-
-
-if __name__=="__main__":
-   app.debug=True
-   app.run() 
