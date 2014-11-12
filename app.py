@@ -18,9 +18,8 @@ def main():
     foods.append({'id': 9,'flavors': [0.5, 0.3333333333333333, 0.5, 0.5, 0.0, 0.8333333333333334], 'image': 'http://lh3.ggpht.com/daLmPWVvNR466D8m_tKF9uGg7rw6eCFXKKzqprMkoUXHI9faUctEIppYYeHd3ZP0phM7inUj8ZAZLXzqnfbT=s90', 'name': '5 Minute Homemade Mac and Cheese'})
     attribution="Recipe search powered by <a href='http://www.yummly.com/recipes'><img alt='Yummly' src='http://static.yummly.com/api-logo.png'/></a>"
     if request.method == "GET":
-        return render_template("base.html", foods=foods, test="moo",attribution=attribution)
+        return render_template("base.html", foods=foods, test="moo",attribution=attribution, entered = False)
     else:
-        
         empty=[]
         elements = 0
         flavors = [0,0,0,0,0,0]
@@ -34,5 +33,44 @@ def main():
         for i in range(6):
             if elements != 0:
                 flavors[i] = flavors[i]/elements      
-        test="sweet,sour,salty,bitter,piquant,meaty<br>"+str(flavors)               
-        return render_template("base.html", foods=empty, test=test,attribution=attribution)
+        test="sweet,sour,salty,bitter,piquant,meaty<br>"+str(flavors)  
+        ran = []
+        smallestdist = 5
+        bestfood = {}
+        print flavors
+        for flavor in flavors:
+            print flavor
+            ran.append(flavor-0.2)
+            ran.append(flavor+0.2)
+        print tuple(ran)
+        url = "http://api.yummly.com/v1/api/recipes?_app_id=9bb0bd30&_app_key=9e7a1eeeae374a6f14d388e755204848&flavor.sweet.min=%f&flavor.sweet.max=%f&flavor.sour.min=%f&flavor.sour.max=%f&flavor.salty.min=%f&flavor.salty.max=%f&flavor.bitter.min=%f&flavor.bitter.max=%f&flavor.piquant.min=%f&flavor.piquant.max=%f&flavor.meaty.min=%f&flavor.meaty.max=%f&requirePictures=true" % tuple(ran)
+        req = urllib2.urlopen(url)
+        res_string = req.read()
+        results = json.loads(res_string)
+        for match in results['matches']:
+            thisfood = {}
+            distance = 0
+            if 'smallImageUrls' in match.keys():
+                thisfood['image'] = (match['smallImageUrls'][0].strip('=s90'))
+            if 'flavors' in match.keys():
+                distance += ((match['flavors']['sweet']-flavors[0])**2)+((match['flavors']['sour']-flavors[1])**2)+((match['flavors']['salty']-flavors[2])**2)
+                distance += ((match['flavors']['bitter']-flavors[3])**2)+((match['flavors']['piquant']-flavors[4])**2)+((match['flavors']['meaty']-flavors[5])**2)
+            thisfood['distance'] = distance
+            thisfood['flavors']=[0,0,0,0,0,0]
+            thisfood['flavors'][0] = (match['flavors']['sweet'])
+            thisfood['flavors'][1] = (match['flavors']['sour'])
+            thisfood['flavors'][2] = (match['flavors']['salty'])
+            thisfood['flavors'][3] = (match['flavors']['bitter'])
+            thisfood['flavors'][4] = (match['flavors']['piquant'])
+            thisfood['flavors'][5] = (match['flavors']['meaty'])
+            if 'recipeName' in match.keys():
+                thisfood['name'] = (match['recipeName'])
+            if distance < smallestdist:
+                bestfood = thisfood
+        print bestfood
+        return render_template("base.html", foods=empty, test=bestfood,attribution=attribution, entered = True)
+
+
+if __name__=="__main__":
+   app.debug=True
+   app.run() 
