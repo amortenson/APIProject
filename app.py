@@ -33,7 +33,7 @@ def main():
         for i in range(6):
             if elements != 0:
                 flavors[i] = flavors[i]/elements      
-        test=str(flavors)               
+        test="sweet,sour,salty,bitter,piquant,meaty<br>"+str(flavors)               
         return render_template("base.html", foods=empty, test=test,attribution=attribution)
 
 
