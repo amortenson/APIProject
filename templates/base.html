@@ -19,7 +19,7 @@
     </center>
     <center>
       <div>
-      <form method="POST">
+      <form method="POST" class="pure-form pure-form-aligned">
 	<fieldset>
 	  <legend>Dietary Restrictions:</legend>
 	  <input type="radio" name="diet" value="388^Lacto vegetarian">Lacto Vegetarian<br>
@@ -27,9 +27,6 @@
  	  <input type="radio" name="diet" value="390^Pescetarian">Pescetarian<br>
 	  <input type="radio" name="diet" value="391^Vegan">Vegan<br>
 	  <input type="radio" name="diet" value="392^Vegetarian">Vegetarian<br>
-	  <input type="button" name="submit" value="Submit">
-	</fieldset>
-	</form>
       </div>
     </center>
     <br>
@@ -40,8 +37,6 @@
 	{% block bodycontent %}
 	<h1>Rate the Following Foods to Find Your Ideal Food:</h1>
 	<br>
-	<form method="POST" class="pure-form pure-form-aligned">
-	  <fieldset>  
 	    {% for food in foods %}
 	    <div class="pure-control-group">
 	      <img src="{{ food['image'] }}"></img>
