@@ -20,14 +20,6 @@ def main():
     if request.method == "GET":
         return render_template("base.html", foods=foods, test="moo",attribution=attribution)
     else:
-        diet = request.form["diet"]
-        url = "http://api.yummly.com/v1/api/recipes?_app_id=9bb0bd30&_app_key=9e7a1eeeae374a6f14d388e755204848&allowedDiet[]=%s&requirePictures=true&maxresult=10"
-        url = url%(diet)
-        request = urllib2.urlopen(url)
-        res_string = request.read()
-        results = json.loads(res_string)
-        print results
-        
         empty=[]
         elements = 0
         flavors = [0,0,0,0,0,0]
